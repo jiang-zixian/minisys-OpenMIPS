@@ -64,6 +64,7 @@ module regfile(
 	  end else if(raddr1 == `RegNumLog2'h0) begin//`define RegNumLog2 5 寻址通用寄存器使用的地址位数
 	  		rdata1 <= `ZeroWord;//如果读取的是$0，那么直接给出0
 	  end else if((raddr1 == waddr) && (we == `WriteEnable) 
+	  //这里可以解决相隔两条指令的数据相关问题，可见书籍P110
 	  	            && (re1 == `ReadEnable)) begin//如果第一个读寄存器端口要读取的目标寄存器与要写入的目的寄存器是同一个寄存器，那么直接将要写入的值作为第一个读寄存器端口的输出
 	  	  rdata1 <= wdata;
 	  end else if(re1 == `ReadEnable) begin//以上都不满足，那么从raddr1处读值赋给对应寄存器

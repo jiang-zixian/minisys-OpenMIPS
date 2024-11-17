@@ -27,6 +27,16 @@ module id(
 	input wire					   rst,
 	input wire[`InstAddrBus]	   pc_i,//译码阶段的指令对应的地址
 	input wire[`InstBus]          inst_i,//译码阶段的指令 32bit
+	
+		//处于执行阶段的指令要写入的目的寄存器信息
+    input wire                    ex_wreg_i,//处于执行阶段的指令是否要写目的寄存器
+    input wire[`RegBus]           ex_wdata_i,//处于执行阶段的指令要写的目的寄存器地址
+    input wire[`RegAddrBus]       ex_wd_i,//处于执行阶段的指令要写入目的寄存器的数据
+    
+    //处于访存阶段的指令要写入的目的寄存器信息
+    input wire                    mem_wreg_i,//处于访存阶段的指令是否要写目的寄存器
+    input wire[`RegBus]           mem_wdata_i,//处于访存阶段的指令要写的目的寄存器地址
+    input wire[`RegAddrBus]       mem_wd_i,//处于访存阶段的指令要写入目的寄存器的数据
 
 	input wire[`RegBus]           reg1_data_i,//从 Regfile 输入的第一个读寄存器端口的输入
 	input wire[`RegBus]           reg2_data_i,//从 Regfile 输入的第二个读寄存器端口的输入
@@ -70,6 +80,7 @@ module id(
 			reg2_read_o <= 1'b0;
 			reg1_addr_o <= `NOPRegAddr;
 			reg2_addr_o <= `NOPRegAddr;
+			reg2_addr_o <= `NOPRegAddr;
 			imm <= 32'h0;			
 	  end else begin
 			aluop_o <= `EXE_NOP_OP;
@@ -108,29 +119,53 @@ module id(
 	end         //always
 	
 //二、确定进行运算的源操作数 1 
+
+//为解决数据相关问题，给 reg1_o 赋值的过程增加了两种情况：
+//1．如果 Regfile 模块读端口 1 要读取的寄存器就是执行阶段要写的目的寄存器，
+// 那么直接把执行阶段的结果 ex_wdata_i 作为 reg1_o 的值;
+//2．如果 Regfile 模块读端口 1 要读取的寄存器就是访存阶段要写的目的寄存器，
+// 那么直接把访存阶段的结果 mem_wdata_i 作为 reg1_o 的值;
 	always @ (*) begin
-		if(rst == `RstEnable) begin
-			reg1_o <= `ZeroWord;
-	  end else if(reg1_read_o == 1'b1) begin
-	  	reg1_o <= reg1_data_i;
-	  end else if(reg1_read_o == 1'b0) begin
-	  	reg1_o <= imm;
-	  end else begin
-	    reg1_o <= `ZeroWord;
-	  end
-	end
+    if(rst == `RstEnable) begin
+        reg1_o <= `ZeroWord;        
+    end else if((reg1_read_o == 1'b1) && (ex_wreg_i == 1'b1) 
+                            && (ex_wd_i == reg1_addr_o)) begin
+        reg1_o <= ex_wdata_i; 
+    end else if((reg1_read_o == 1'b1) && (mem_wreg_i == 1'b1) 
+                            && (mem_wd_i == reg1_addr_o)) begin
+        reg1_o <= mem_wdata_i;             
+  end else if(reg1_read_o == 1'b1) begin
+      reg1_o <= reg1_data_i;
+  end else if(reg1_read_o == 1'b0) begin
+      reg1_o <= imm;
+  end else begin
+    reg1_o <= `ZeroWord;
+  end
+end
 	
 	//三、确定进行运算的源操作数 2
+	
+	//为解决数据相关问题，给 reg2_o 赋值的过程增加了两种情况：
+    //1．如果 Regfile 模块读端口 2 要读取的寄存器就是执行阶段要写的目的寄存器，
+    // 那么直接把执行阶段的结果 ex_wdata_i 作为 reg2_o 的值;
+    //2．如果 Regfile 模块读端口 2 要读取的寄存器就是访存阶段要写的目的寄存器，
+    // 那么直接把访存阶段的结果 mem_wdata_i 作为 reg2_o 的值;
 	always @ (*) begin
-		if(rst == `RstEnable) begin
-			reg2_o <= `ZeroWord;
-	  end else if(reg2_read_o == 1'b1) begin
-	  	reg2_o <= reg2_data_i;
-	  end else if(reg2_read_o == 1'b0) begin
-	  	reg2_o <= imm;
-	  end else begin
-	    reg2_o <= `ZeroWord;
-	  end
-	end
+        if(rst == `RstEnable) begin
+            reg2_o <= `ZeroWord;
+        end else if((reg2_read_o == 1'b1) && (ex_wreg_i == 1'b1) 
+                                && (ex_wd_i == reg2_addr_o)) begin
+            reg2_o <= ex_wdata_i; 
+        end else if((reg2_read_o == 1'b1) && (mem_wreg_i == 1'b1) 
+                                && (mem_wd_i == reg2_addr_o)) begin
+            reg2_o <= mem_wdata_i;            
+      end else if(reg2_read_o == 1'b1) begin
+          reg2_o <= reg2_data_i;
+      end else if(reg2_read_o == 1'b0) begin
+          reg2_o <= imm;
+      end else begin
+        reg2_o <= `ZeroWord;
+      end
+    end
 
 endmodule
