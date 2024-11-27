@@ -40,8 +40,13 @@ module regfile(
 	//读端口2
 	input wire							re2,//第二个读寄存器端口读使能信号
 	input wire[`RegAddrBus]			    raddr2,//第二个读寄存器端口要读取的寄存器的地址
-	output reg[`RegBus]                 rdata2//第二个读寄存器端口输出的寄存器值
+	output reg[`RegBus]                 rdata2,//第二个读寄存器端口输出的寄存器值
 	
+	// 输出寄存器 1、2、3、4 的值
+    output wire[`RegBus] out_r1,
+    output wire[`RegBus] out_r2,
+    output wire[`RegBus] out_r3,
+    output wire[`RegBus] out_r4
 );
 
 //一、定义 32 个 32 位寄存器
@@ -89,5 +94,11 @@ module regfile(
 	      rdata2 <= `ZeroWord;
 	  end
 	end
+	
+	// 五、输出指定寄存器的值
+    assign out_r1 = regs[1]; // 输出寄存器 1 的值
+    assign out_r2 = regs[2]; // 输出寄存器 2 的值
+    assign out_r3 = regs[3]; // 输出寄存器 3 的值
+    assign out_r4 = regs[4]; // 输出寄存器 4 的值
 
 endmodule

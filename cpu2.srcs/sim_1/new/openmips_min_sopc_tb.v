@@ -28,6 +28,15 @@ module openmips_min_sopc_tb();
   wire[`InstBus] inst;
   // 保存逻辑运算的结果
   wire[`RegBus] logicout;
+  
+  // 输出寄存器 1、2、3、4 的值
+  wire[`RegBus] out_r1;
+  wire[`RegBus] out_r2;
+  wire[`RegBus] out_r3;
+  wire[`RegBus] out_r4;
+  wire[`RegBus] out_hi;
+  wire[`RegBus] out_lo; 
+  wire[`RegBus] reg1_i_out;
 
   
        
@@ -48,7 +57,14 @@ module openmips_min_sopc_tb();
 		.rst(rst)	,
 		.rom_ce(rom_ce),
 		.inst(inst),
-		.logicout(logicout)
+		.logicout(logicout),  
+        .out_r1(out_r1),
+        .out_r2(out_r2),
+        .out_r3(out_r3),
+        .out_r4(out_r4),
+        .out_hi(out_hi),
+        .out_lo(out_lo),
+        .reg1_i_out(reg1_i_out)
 	);
 
 endmodule
