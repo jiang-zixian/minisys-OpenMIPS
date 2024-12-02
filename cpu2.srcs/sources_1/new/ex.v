@@ -50,6 +50,10 @@ module ex(
 	input wire[`DoubleRegBus]     hilo_temp_i,//第一个执行周期得到的乘法结果
     input wire[1:0]               cnt_i,//当前处于执行阶段的第几个时钟周期
 	
+	//与除法模块相连
+    input wire[`DoubleRegBus]     div_result_i,//除法运算结果 64bit
+    input wire                    div_ready_i,	//除法运算是否结束
+	
 	output reg[`RegAddrBus]       wd_o,//执行阶段的指令最终要写入的目的寄存器地址 5bit
 	output reg                    wreg_o,//执行阶段的指令最终是否有要写入的目的寄存器 1bit
 	output reg[`RegBus]	    	   wdata_o,//执行阶段的指令最终要写入目的寄存器的值 32bit
@@ -67,7 +71,11 @@ module ex(
     
     output    wire[`RegBus]           reg1_i_out,
     
-    output reg										stallreq    
+    output reg[`RegBus]           div_opdata1_o,//被除数
+    output reg[`RegBus]           div_opdata2_o,//除数
+    output reg                    div_start_o,//是否开始除法运算
+    output reg                    signed_div_o,//是否是有符号除法，为 1 表示是有符号除法
+    output reg					   stallreq    
 	
 );
 
@@ -91,7 +99,8 @@ module ex(
     wire[`RegBus] opdata2_mult;// 乘法操作中的乘数
     wire[`DoubleRegBus] hilo_temp;// 临时保存乘法结果，宽度为 64 位      
     reg[`DoubleRegBus] hilo_temp1;
-    reg stallreq_for_madd_msub;          
+    reg stallreq_for_madd_msub;   
+	reg stallreq_for_div;           
 	
 	//一、依据 aluop_i 指示的运算子类型进行运算
 	always @ (*) begin
@@ -331,10 +340,73 @@ module ex(
           end
       end    
       
+  //DIV、DIVU指令	
+        always @ (*) begin
+            if(rst == `RstEnable) begin
+                stallreq_for_div <= `NoStop;
+            div_opdata1_o <= `ZeroWord;
+                div_opdata2_o <= `ZeroWord;
+                div_start_o <= `DivStop;
+                signed_div_o <= 1'b0;
+            end else begin
+                stallreq_for_div <= `NoStop;
+            div_opdata1_o <= `ZeroWord;
+                div_opdata2_o <= `ZeroWord;
+                div_start_o <= `DivStop;
+                signed_div_o <= 1'b0;    
+                case (aluop_i) 
+                    `EXE_DIV_OP:        begin
+                        if(div_ready_i == `DivResultNotReady) begin
+                        div_opdata1_o <= reg1_i;
+                            div_opdata2_o <= reg2_i;
+                            div_start_o <= `DivStart;
+                            signed_div_o <= 1'b1;
+                            stallreq_for_div <= `Stop;
+                        end else if(div_ready_i == `DivResultReady) begin
+                        div_opdata1_o <= reg1_i;
+                            div_opdata2_o <= reg2_i;
+                            div_start_o <= `DivStop;
+                            signed_div_o <= 1'b1;
+                            stallreq_for_div <= `NoStop;
+                        end else begin                        
+                        div_opdata1_o <= `ZeroWord;
+                            div_opdata2_o <= `ZeroWord;
+                            div_start_o <= `DivStop;
+                            signed_div_o <= 1'b0;
+                            stallreq_for_div <= `NoStop;
+                        end                    
+                    end
+                    `EXE_DIVU_OP:        begin
+                        if(div_ready_i == `DivResultNotReady) begin
+                        div_opdata1_o <= reg1_i;
+                            div_opdata2_o <= reg2_i;
+                            div_start_o <= `DivStart;
+                            signed_div_o <= 1'b0;
+                            stallreq_for_div <= `Stop;
+                        end else if(div_ready_i == `DivResultReady) begin
+                        div_opdata1_o <= reg1_i;
+                            div_opdata2_o <= reg2_i;
+                            div_start_o <= `DivStop;
+                            signed_div_o <= 1'b0;
+                            stallreq_for_div <= `NoStop;
+                        end else begin                        
+                        div_opdata1_o <= `ZeroWord;
+                            div_opdata2_o <= `ZeroWord;
+                            div_start_o <= `DivStop;
+                            signed_div_o <= 1'b0;
+                            stallreq_for_div <= `NoStop;
+                        end                    
+                    end
+                    default: begin
+                    end
+                endcase
+            end
+        end          
+      
 // 目前只有乘累加、乘累减指令会导致流水线暂停，所以 stallreq 就直接等于stallreq_for_madd_msub 的值
-      always @ (*) begin
-        stallreq = stallreq_for_madd_msub;
-      end          
+     always @ (*) begin
+      stallreq = stallreq_for_madd_msub || stallreq_for_div;
+    end      
 
     //MFHI、MFLO、MOVN、MOVZ指令
 	always @ (*) begin
@@ -416,7 +488,11 @@ module ex(
          end else if((aluop_i == `EXE_MSUB_OP) || (aluop_i == `EXE_MSUBU_OP)) begin
              whilo_o <= `WriteEnable;
              hi_o <= hilo_temp1[63:32];
-             lo_o <= hilo_temp1[31:0];                                 
+             lo_o <= hilo_temp1[31:0];  
+		end else if((aluop_i == `EXE_DIV_OP) || (aluop_i == `EXE_DIVU_OP)) begin
+                 whilo_o <= `WriteEnable;
+                 hi_o <= div_result_i[63:32];
+                 lo_o <= div_result_i[31:0];                                                    
          end else if(aluop_i == `EXE_MTHI_OP) begin
              whilo_o <= `WriteEnable;
              hi_o <= reg1_i;

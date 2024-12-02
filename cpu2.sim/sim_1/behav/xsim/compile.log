@@ -1,5 +1,7 @@
 INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu2/cpu2.srcs/sources_1/new/ctrl.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module ctrl
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu2/cpu2.srcs/sources_1/new/div.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module div
 INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu2/cpu2.srcs/sources_1/new/ex.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module ex
 INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu2/cpu2.srcs/sources_1/new/ex_mem.v" into library xil_defaultlib
