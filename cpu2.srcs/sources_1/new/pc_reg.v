@@ -27,6 +27,9 @@ module pc_reg(
 	input wire			clk,//时钟信号
 	input wire			rst,//复位信号
 	
+	//来自控制模块的信息
+    input wire[5:0]               stall,	
+	
 	output reg[`InstAddrBus]	pc,//InstAddrBus 宏表示指令地址线的宽度
 	output reg                  ce//指令寄存器的使能信号
 	
@@ -43,7 +46,7 @@ module pc_reg(
 	always @ (posedge clk) begin
 		if (ce == `ChipDisable) begin
 			pc <= 32'h00000000;
-		end else begin
+		end else if(stall[0] == `NoStop) begin
 	 		pc <= pc + 4'h4;//指令存储器使能的时候，PC 的值每时钟周期加 4。
 	 		//表示下一条指令的地址，因为一条指令是 32 位，而设计的minisys-cpu是可以按照字节寻址的，一条指令对应 4 个字节，所以 PC 加 4 指向下一条指令地址
 		end

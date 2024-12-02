@@ -111,11 +111,23 @@ module openmips(
   	//连接执行阶段与hilo模块的输出，读取HI、LO寄存器
 //  wire[`RegBus]     hi;
 //  wire[`RegBus]   lo;
+
+  //连接执行阶段与ex_reg模块，用于多周期的MADD、MADDU、MSUB、MSUBU指令
+	wire[`DoubleRegBus] hilo_temp_o;
+	wire[1:0] cnt_o;
+	
+	wire[`DoubleRegBus] hilo_temp_i;
+	wire[1:0] cnt_i;
+
+	wire[5:0] stall;
+	wire stallreq_from_id;	
+	wire stallreq_from_ex;
   
   //pc_reg例化
 	pc_reg pc_reg0(
 		.clk(clk),
 		.rst(rst),
+		.stall(stall),
 		.pc(pc),
 		.ce(rom_ce_o)	
 			
@@ -127,6 +139,7 @@ module openmips(
 	if_id if_id0(
 		.clk(clk),
 		.rst(rst),
+		.stall(stall),
 		.if_pc(pc),
 		.if_inst(rom_data_i),
 		.id_pc(id_pc_i),
@@ -165,7 +178,9 @@ module openmips(
 		.reg1_o(id_reg1_o),
 		.reg2_o(id_reg2_o),
 		.wd_o(id_wd_o),
-		.wreg_o(id_wreg_o)
+		.wreg_o(id_wreg_o),
+		
+		.stallreq(stallreq_from_id)				
 	);
 
   //通用寄存器Regfile例化
@@ -193,6 +208,8 @@ module openmips(
 	id_ex id_ex0(
 		.clk(clk),
 		.rst(rst),
+		
+        .stall(stall),
 		
 		//从译码阶段ID模块传递的信息
 		.id_aluop(id_aluop_o),
@@ -230,7 +247,10 @@ module openmips(
         .wb_whilo_i(wb_whilo_i),
         .mem_hi_i(mem_hi_o),
         .mem_lo_i(mem_lo_o),
-        .mem_whilo_i(mem_whilo_o),        
+        .mem_whilo_i(mem_whilo_o),    
+        
+	    .hilo_temp_i(hilo_temp_i),
+        .cnt_i(cnt_i),            
 	  
 	  //EX模块的输出到EX/MEM模块信息
 		.wd_o(ex_wd_o),
@@ -242,7 +262,12 @@ module openmips(
         .whilo_o(ex_whilo_o),		
 		
 		.logicout(logicout),
-		.reg1_i_out(reg1_i_out)
+		.reg1_i_out(reg1_i_out),
+		
+		.hilo_temp_o(hilo_temp_o),
+        .cnt_o(cnt_o),
+        
+        .stallreq(stallreq_from_ex)    		
 		
 	);
 
@@ -250,6 +275,8 @@ module openmips(
   ex_mem ex_mem0(
 		.clk(clk),
 		.rst(rst),
+		
+		.stall(stall),		
 	  
 		//来自执行阶段EX模块的信息	
 		.ex_wd(ex_wd_o),
@@ -259,6 +286,8 @@ module openmips(
         .ex_lo(ex_lo_o),
         .ex_whilo(ex_whilo_o),        		
 	
+		.hilo_i(hilo_temp_o),
+        .cnt_i(cnt_o),    	
 
 		//送到访存阶段MEM模块的信息
 		.mem_wd(mem_wd_i),
@@ -266,8 +295,10 @@ module openmips(
 		.mem_wdata(mem_wdata_i),
 		.mem_hi(mem_hi_i),
         .mem_lo(mem_lo_i),
-        .mem_whilo(mem_whilo_i)        
-
+        .mem_whilo(mem_whilo_i) ,       
+        
+        .hilo_o(hilo_temp_i),
+        .cnt_o(cnt_i)
 						       	
 	);
 	
@@ -296,6 +327,8 @@ module openmips(
 	mem_wb mem_wb0(
 		.clk(clk),
 		.rst(rst),
+		
+		.stall(stall),		
 
 		//来自访存阶段MEM模块的信息	
 		.mem_wd(mem_wd_o),
@@ -328,6 +361,17 @@ module openmips(
         .hi_o(hi),
         .lo_o(lo)    
     );
+    
+	ctrl ctrl0(
+        .rst(rst),
+    
+        .stallreq_from_id(stallreq_from_id),
+    
+      //来自执行阶段的暂停
+        .stallreq_from_ex(stallreq_from_ex),
+
+        .stall(stall)           
+    );    
     
 //    assign out_hi=hi;
 //    assign out_lo=lo;

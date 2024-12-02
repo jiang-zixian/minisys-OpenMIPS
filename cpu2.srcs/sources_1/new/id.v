@@ -53,7 +53,9 @@ module id(
 	output reg[`RegBus]           reg1_o,//译码阶段的指令要进行的运算的源操作数1
 	output reg[`RegBus]           reg2_o,//译码阶段的指令要进行的运算的源操作数2
 	output reg[`RegAddrBus]       wd_o,//译码阶段的指令要写入的目的寄存器地址 5bit
-	output reg                    wreg_o//译码阶段的指令是否有要写入的目的寄存器
+	output reg                    wreg_o,//译码阶段的指令是否有要写入的目的寄存器
+
+    output wire                   stallreq	
 );
 // 取得指令的指令码，功能码
 // 对于 ori 指令只需通过判断第 26-31bit 的值，即可判断是否是 ori 指令
@@ -67,6 +69,8 @@ module id(
   
   // 指示指令是否有效
   reg instvalid;
+  
+  assign stallreq = `NoStop;
   
  //一、对指令进行译码 
 	always @ (*) begin	
@@ -292,6 +296,26 @@ module id(
                       alusel_o <= `EXE_RES_MUL; reg1_read_o <= 1'b1;    reg2_read_o <= 1'b1;    
                       instvalid <= `InstValid;                  
                     end
+                    `EXE_MADD:		begin
+                        wreg_o <= `WriteDisable;        aluop_o <= `EXE_MADD_OP;
+                      alusel_o <= `EXE_RES_MUL; reg1_read_o <= 1'b1;    reg2_read_o <= 1'b1;                  
+                      instvalid <= `InstValid;    
+                    end
+                    `EXE_MADDU:        begin
+                        wreg_o <= `WriteDisable;        aluop_o <= `EXE_MADDU_OP;
+                      alusel_o <= `EXE_RES_MUL; reg1_read_o <= 1'b1;    reg2_read_o <= 1'b1;                  
+                      instvalid <= `InstValid;    
+                    end
+                    `EXE_MSUB:        begin
+                        wreg_o <= `WriteDisable;        aluop_o <= `EXE_MSUB_OP;
+                      alusel_o <= `EXE_RES_MUL; reg1_read_o <= 1'b1;    reg2_read_o <= 1'b1;                  
+                      instvalid <= `InstValid;    
+                    end
+                    `EXE_MSUBU:        begin
+                        wreg_o <= `WriteDisable;        aluop_o <= `EXE_MSUBU_OP;
+                      alusel_o <= `EXE_RES_MUL; reg1_read_o <= 1'b1;    reg2_read_o <= 1'b1;                  
+                      instvalid <= `InstValid;    
+                    end                                    
                     default:    begin
                     end
                 endcase      //EXE_SPECIAL_INST2 case
