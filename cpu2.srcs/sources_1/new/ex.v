@@ -54,6 +54,10 @@ module ex(
     input wire[`DoubleRegBus]     div_result_i,//除法运算结果 64bit
     input wire                    div_ready_i,	//除法运算是否结束
 	
+	//是否转移、以及link address
+    input wire[`RegBus]           link_address_i,
+    input wire                    is_in_delayslot_i,  //这个信号会在异常处理过程中使用到，本章暂时不需要  	
+	
 	output reg[`RegAddrBus]       wd_o,//执行阶段的指令最终要写入的目的寄存器地址 5bit
 	output reg                    wreg_o,//执行阶段的指令最终是否有要写入的目的寄存器 1bit
 	output reg[`RegBus]	    	   wdata_o,//执行阶段的指令最终要写入目的寄存器的值 32bit
@@ -461,6 +465,9 @@ module ex(
          end
          `EXE_RES_MUL:        begin//乘法
              wdata_o <= mulres[31:0];
+         end         
+	 	`EXE_RES_JUMP_BRANCH:	begin
+             wdata_o <= link_address_i;
          end                     
 	 	default:					begin
 	 		wdata_o <= `ZeroWord;
