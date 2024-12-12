@@ -1,0 +1,32 @@
+#-----------------------------------------------------------
+# Vivado v2017.4 (64-bit)
+# SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
+# IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
+# Start of session at: Fri Dec  6 12:14:07 2024
+# Process ID: 16912
+# Current directory: E:/VivadoProjects/cpu3
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent13868 E:\VivadoProjects\cpu3\cpu3.xpr
+# Log file: E:/VivadoProjects/cpu3/vivado.log
+# Journal file: E:/VivadoProjects/cpu3\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project E:/VivadoProjects/cpu3/cpu3.xpr
+file mkdir E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new
+close [ open E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/defines.v w ]
+add_files E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/defines.v
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+add_files -norecurse {E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v}
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+file mkdir E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new
+set_property SOURCE_SET sources_1 [get_filesets sim_1]
+close [ open E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v w ]
+add_files -fileset sim_1 E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v
+update_compile_order -fileset sim_1
+update_compile_order -fileset sim_1
+launch_simulation
+launch_simulation
+source openmips_min_sopc_tb.tcl
+restart
+run 3000 ns
