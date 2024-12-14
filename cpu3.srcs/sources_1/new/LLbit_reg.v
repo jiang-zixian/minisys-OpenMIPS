@@ -1,34 +1,21 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2014 leishangwen@163.com                       ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// Module:  LLbit_reg
-// File:    LLbit_reg.v
-// Author:  Lei Silei
-// E-mail:  leishangwen@163.com
-// Description: 保存LLbit，用在SC、LL指令中
-// Revision: 1.0
-//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/26 13:17:32
+// Design Name: 
+// Module Name: LLbit__reg
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+//////////////////////////////////////////////////////////////////////////////////
 
 `include "defines.v"
 
@@ -37,12 +24,13 @@ module LLbit_reg(
 	input	wire										clk,
 	input wire										rst,
 	
+	// 异常是否发生，为 1 表示异常发生，为 0 表示没有异常
 	input wire                    flush,
 	//写端口
 	input wire										LLbit_i,
 	input wire                    we,
 	
-	//读端口1
+	//读端口1 LLbit 寄存器的值
 	output reg                    LLbit_o
 	
 );
@@ -52,7 +40,7 @@ module LLbit_reg(
 		if (rst == `RstEnable) begin
 					LLbit_o <= 1'b0;
 		end else if((flush == 1'b1)) begin
-					LLbit_o <= 1'b0;
+					LLbit_o <= 1'b0;//如果异常发生，那么设置 LLbit_o 为 0
 		end else if((we == `WriteEnable)) begin
 					LLbit_o <= LLbit_i;
 		end

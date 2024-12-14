@@ -1,34 +1,22 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2014 leishangwen@163.com                       ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// Module:  openmips
-// File:    openmips.v
-// Author:  Lei Silei
-// E-mail:  leishangwen@163.com
-// Description: OpenMIPS处理器的顶层文件
-// Revision: 1.0
-//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/08 21:35:15
+// Design Name: 
+// Module Name: openmips
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 顶层模块 OpenMIPS ，主要内容就是对之前实现的流水线各个阶段的模块进行例化、连接
+//////////////////////////////////////////////////////////////////////////////////
 
 `include "defines.v"
 
@@ -37,19 +25,19 @@ module openmips(
 	input	wire										clk,
 	input wire										rst,
 	
-    input wire[5:0]                int_i,
+    input wire[5:0]                int_i,//6 个外部硬件中断输入 6bit
   
-      // 用于测试的数据
-      output wire[`InstAddrBus] pc,
-      output wire[`RegBus] out_r1,
-      output wire[`RegBus] out_r2,
-      output wire[`RegBus] out_r3,
-      output wire[`RegBus] out_r4, 
-      output wire[`RegBus]     hi,
-      output wire[`RegBus]   lo,
-      output wire[`RegBus]           count_o,
-      output wire[`RegBus]           compare_o,
-      output wire[`RegBus]           status_o,
+    // 用于测试的数据
+    output wire[`InstAddrBus] pc,
+    output wire[`RegBus] out_r1,
+    output wire[`RegBus] out_r2,
+    output wire[`RegBus] out_r3,
+    output wire[`RegBus] out_r4, 
+    output wire[`RegBus]     hi,
+    output wire[`RegBus]   lo,
+    output wire[`RegBus]           count_o,
+    output wire[`RegBus]           compare_o,
+    output wire[`RegBus]           status_o,
   
 	input wire[`RegBus]           rom_data_i,
 	output wire[`RegBus]           rom_addr_o,
@@ -63,7 +51,7 @@ module openmips(
 	output wire[3:0]               ram_sel_o,
 	output wire[3:0]               ram_ce_o,
 	
-	output wire                    timer_int_o
+	output wire                    timer_int_o//是否有定时中断发生
 	
 );
 
@@ -92,11 +80,11 @@ module openmips(
 	wire ex_wreg_i;
 	wire[`RegAddrBus] ex_wd_i;
 	wire ex_is_in_delayslot_i;	
-  wire[`RegBus] ex_link_address_i;	
-  wire[`RegBus] ex_inst_i;
-  wire[31:0] ex_excepttype_i;	
-  wire[`RegBus] ex_current_inst_address_i;	
-	
+    wire[`RegBus] ex_link_address_i;	
+    wire[`RegBus] ex_inst_i;
+    wire[31:0] ex_excepttype_i;	
+    wire[`RegBus] ex_current_inst_address_i;	
+
 	//连接执行阶段EX模块的输出与EX/MEM模块的输入
 	wire ex_wreg_o;
 	wire[`RegAddrBus] ex_wd_o;
@@ -347,7 +335,7 @@ module openmips(
 		.ex_wd(ex_wd_i),
 		.ex_wreg(ex_wreg_i),
 		.ex_link_address(ex_link_address_i),
-  	.ex_is_in_delayslot(ex_is_in_delayslot_i),
+		.ex_is_in_delayslot(ex_is_in_delayslot_i),
 		.is_in_delayslot_o(is_in_delayslot_i),
 		.ex_inst(ex_inst_i),
 		.ex_excepttype(ex_excepttype_i),
@@ -369,32 +357,32 @@ module openmips(
 		.lo_i(lo),
 		.inst_i(ex_inst_i),
 
-	  .wb_hi_i(wb_hi_i),
-	  .wb_lo_i(wb_lo_i),
-	  .wb_whilo_i(wb_whilo_i),
-	  .mem_hi_i(mem_hi_o),
-	  .mem_lo_i(mem_lo_o),
-	  .mem_whilo_i(mem_whilo_o),
-
-	  .hilo_temp_i(hilo_temp_i),
-	  .cnt_i(cnt_i),
+        .wb_hi_i(wb_hi_i),
+        .wb_lo_i(wb_lo_i),
+        .wb_whilo_i(wb_whilo_i),
+        .mem_hi_i(mem_hi_o),
+        .mem_lo_i(mem_lo_o),
+        .mem_whilo_i(mem_whilo_o),
+        
+        .hilo_temp_i(hilo_temp_i),
+        .cnt_i(cnt_i),
 
 		.div_result_i(div_result),
 		.div_ready_i(div_ready), 
 
-	  .link_address_i(ex_link_address_i),
+        .link_address_i(ex_link_address_i),
 		.is_in_delayslot_i(ex_is_in_delayslot_i),	  
 		
 		.excepttype_i(ex_excepttype_i),
 		.current_inst_address_i(ex_current_inst_address_i),
 
 		//访存阶段的指令是否要写CP0，用来检测数据相关
-  	.mem_cp0_reg_we(mem_cp0_reg_we_o),
+        .mem_cp0_reg_we(mem_cp0_reg_we_o),   
 		.mem_cp0_reg_write_addr(mem_cp0_reg_write_addr_o),
 		.mem_cp0_reg_data(mem_cp0_reg_data_o),
 	
 		//回写阶段的指令是否要写CP0，用来检测数据相关
-  	.wb_cp0_reg_we(wb_cp0_reg_we_i),
+        .wb_cp0_reg_we(wb_cp0_reg_we_i),
 		.wb_cp0_reg_write_addr(wb_cp0_reg_write_addr_i),
 		.wb_cp0_reg_data(wb_cp0_reg_data_i),
 
@@ -451,7 +439,7 @@ module openmips(
 		.ex_lo(ex_lo_o),
 		.ex_whilo(ex_whilo_o),		
 
-  	.ex_aluop(ex_aluop_o),
+        .ex_aluop(ex_aluop_o),
 		.ex_mem_addr(ex_mem_addr_o),
 		.ex_reg2(ex_reg2_o),			
 	
@@ -459,7 +447,7 @@ module openmips(
 		.ex_cp0_reg_write_addr(ex_cp0_reg_write_addr_o),
 		.ex_cp0_reg_data(ex_cp0_reg_data_o),	
 
-    .ex_excepttype(ex_excepttype_o),
+        .ex_excepttype(ex_excepttype_o),
 		.ex_is_in_delayslot(ex_is_in_delayslot_o),
 		.ex_current_inst_address(ex_current_inst_address_o),	
 

@@ -1,110 +1,110 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2014 leishangwen@163.com                       ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// Module:  id
-// File:    id.v
-// Author:  Lei Silei
-// E-mail:  leishangwen@163.com
-// Description: 译码阶段
-// Revision: 1.0
-//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/07 12:24:22
+// Design Name: 
+// Module Name: id
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// ID 模块的作用是对指令进行译码，得到最终运算的类型、子类型、源操作数 1、源操作
+// 数 2、要写入的目的寄存器地址等信息，其中运算类型指的是逻辑运算、移位运算、算术运算
+// 等，子类型指的是更加详细的运算类型，比如：当运算类型是逻辑运算时，运算子类型可以是
+// 逻辑"或"运算、逻辑"与"运算、逻辑"异或"运算等。
+//
+//
+//////////////////////////////////////////////////////////////////////////////////
 
 `include "defines.v"
 
 module id(
 
-	input wire										rst,
-	input wire[`InstAddrBus]			pc_i,
-	input wire[`InstBus]          inst_i,
+	input wire						rst,
+	input wire[`InstAddrBus]	   pc_i,//译码阶段的指令对应的地址
+    input wire[`InstBus]          inst_i,//译码阶段的指令 32bit
 
-  //处于执行阶段的指令的一些信息，用于解决load相关
-  input wire[`AluOpBus]					ex_aluop_i,
+    //处于执行阶段指令的运算子类型，用于解决load相关
+    input wire[`AluOpBus]			ex_aluop_i,
 
 	//处于执行阶段的指令要写入的目的寄存器信息
-	input wire										ex_wreg_i,
-	input wire[`RegBus]						ex_wdata_i,
-	input wire[`RegAddrBus]       ex_wd_i,
+    input wire                    ex_wreg_i,//处于执行阶段的指令是否要写目的寄存器
+    input wire[`RegBus]           ex_wdata_i,//处于执行阶段的指令要写的目的寄存器地址
+    input wire[`RegAddrBus]       ex_wd_i,//处于执行阶段的指令要写入目的寄存器的数据
 	
 	//处于访存阶段的指令要写入的目的寄存器信息
-	input wire										mem_wreg_i,
-	input wire[`RegBus]						mem_wdata_i,
-	input wire[`RegAddrBus]       mem_wd_i,
+    input wire                    mem_wreg_i,//处于访存阶段的指令是否要写目的寄存器
+    input wire[`RegBus]           mem_wdata_i,//处于访存阶段的指令要写的目的寄存器地址
+    input wire[`RegAddrBus]       mem_wd_i,//处于访存阶段的指令要写入目的寄存器的数据
 	
-	input wire[`RegBus]           reg1_data_i,
-	input wire[`RegBus]           reg2_data_i,
+	input wire[`RegBus]           reg1_data_i,//从 Regfile 输入的第一个读寄存器端口的输入
+    input wire[`RegBus]           reg2_data_i,//从 Regfile 输入的第二个读寄存器端口的输入
 
 	//如果上一条指令是转移指令，那么下一条指令在译码的时候is_in_delayslot为true
 	input wire                    is_in_delayslot_i,
 
 	//送到regfile的信息
-	output reg                    reg1_read_o,
-	output reg                    reg2_read_o,     
-	output reg[`RegAddrBus]       reg1_addr_o,
-	output reg[`RegAddrBus]       reg2_addr_o, 	      
+	output reg                    reg1_read_o,//regfile 模块的第一个读寄存器端口的读使能信号
+	output reg                    reg2_read_o,//regfile 模块的第二个读寄存器端口的读使能信号
+	output reg[`RegAddrBus]       reg1_addr_o,//Regfile 模块的第一个读寄存器端口的读地址信号 5bit
+	output reg[`RegAddrBus]       reg2_addr_o,//Regfile 模块的第二个读寄存器端口的读地址信号 5bit 	      
 	
 	//送到执行阶段的信息
-	output reg[`AluOpBus]         aluop_o,
-	output reg[`AluSelBus]        alusel_o,
-	output reg[`RegBus]           reg1_o,
-	output reg[`RegBus]           reg2_o,
-	output reg[`RegAddrBus]       wd_o,
-	output reg                    wreg_o,
+	output reg[`AluOpBus]         aluop_o,//译码阶段的指令要进行的运算的子类型 8bit
+	output reg[`AluSelBus]        alusel_o,//译码阶段的指令要进行的运算的类型 3bit
+	output reg[`RegBus]           reg1_o,//译码阶段的指令要进行的运算的源操作数1
+	output reg[`RegBus]           reg2_o,//译码阶段的指令要进行的运算的源操作数2
+	output reg[`RegAddrBus]       wd_o,//译码阶段的指令要写入的目的寄存器地址 5bit
+	output reg                    wreg_o,//译码阶段的指令是否有要写入的目的寄存器
 	output wire[`RegBus]          inst_o,
 
-	output reg                    next_inst_in_delayslot_o,
-	
-	output reg                    branch_flag_o,
-	output reg[`RegBus]           branch_target_address_o,       
-	output reg[`RegBus]           link_addr_o,
-	output reg                    is_in_delayslot_o,
+	output reg                    next_inst_in_delayslot_o,//下一条进入译码阶段的指令是否位于延迟槽
+	output reg                    branch_flag_o,//是否发生转移
+	output reg[`RegBus]           branch_target_address_o,//转移到的目标地址     
+	output reg[`RegBus]           link_addr_o,//转移指令要保存的返回地址
+	output reg                    is_in_delayslot_o,//当前处于译码阶段的指令是否位于延迟槽
 
-  output wire[31:0]             excepttype_o,
-  output wire[`RegBus]          current_inst_address_o,
+    output wire[31:0]             excepttype_o,//收集的异常信息 32bit
+    output wire[`RegBus]          current_inst_address_o,//译码阶段指令的地址 32bit
 	
 	output wire                   stallreq	
 );
 
-  wire[5:0] op = inst_i[31:26];
-  wire[4:0] op2 = inst_i[10:6];
-  wire[5:0] op3 = inst_i[5:0];
-  wire[4:0] op4 = inst_i[20:16];
-  reg[`RegBus]	imm;
-  reg instvalid;
-  wire[`RegBus] pc_plus_8;
-  wire[`RegBus] pc_plus_4;
-  wire[`RegBus] imm_sll2_signedext;  
-
-  reg stallreq_for_reg1_loadrelate;
-  reg stallreq_for_reg2_loadrelate;
-  wire pre_inst_is_load;
-  reg excepttype_is_syscall;
-  reg excepttype_is_eret;
+    wire[5:0] op = inst_i[31:26];
+    wire[4:0] op2 = inst_i[10:6];
+    wire[5:0] op3 = inst_i[5:0];
+    wire[4:0] op4 = inst_i[20:16];
+    reg[`RegBus]	imm;
+    reg instvalid;
+    wire[`RegBus] pc_plus_8;
+    wire[`RegBus] pc_plus_4;
+    wire[`RegBus] imm_sll2_signedext;  
+    
+    // 新定义的一个变量，表示要读取的寄存器 1 是否与上一条指令存在 load 相关
+    reg stallreq_for_reg1_loadrelate;
+    // 新定义的一个变量，表示要读取的寄存器 2 是否与上一条指令存在 load 相关
+    reg stallreq_for_reg2_loadrelate;
+    // 新定义的一个变量，表示上一条指令是否是加载指令
+    wire pre_inst_is_load;
+    
+    reg excepttype_is_syscall; // 是否是系统调用异常 syscall
+    reg excepttype_is_eret; // 是否是异常返回指令 eret
   
-  assign pc_plus_8 = pc_i + 8;
-  assign pc_plus_4 = pc_i +4;
-  assign imm_sll2_signedext = {{14{inst_i[15]}}, inst_i[15:0], 2'b00 };  
-  assign stallreq = stallreq_for_reg1_loadrelate | stallreq_for_reg2_loadrelate;
+    assign pc_plus_8 = pc_i + 8;//保存当前译码阶段指令后面第 2 条指令的地址
+    assign pc_plus_4 = pc_i +4;//保存当前译码阶段指令后面紧接着的指令的地址
+    // imm_sll2_signedext 对应分支指令中的 offset 左移两位，再符号扩展至 32 位的值
+    assign imm_sll2_signedext = {{14{inst_i[15]}}, inst_i[15:0], 2'b00 };   
+
+  
+  // 依据输入信号 ex_aluop_i 的值，判断上一条指令是否是加载指令，
+  // 如果是加载指令，那么置 pre_inst_is_load 为 1，反之置为 0
   assign pre_inst_is_load = ((ex_aluop_i == `EXE_LB_OP) || 
   													(ex_aluop_i == `EXE_LBU_OP)||
   													(ex_aluop_i == `EXE_LH_OP) ||
@@ -117,12 +117,13 @@ module id(
 
   assign inst_o = inst_i;
 
-  //exceptiontype的低8bit留给外部中断，第9bit表示是否是syscall指令
-  //第10bit表示是否是无效指令，第11bit表示是否是trap指令
+// excepttype_o 的低 8bit 留给外部中断，第 8bit 表示是否是 syscall 指令引起的
+// 系统调用异常，第 9bit 表示是否是无效指令引起的异常，第 12bit 表示是否是 eret
+// 指令， eret 指令可以认为是一种特殊的异常——返回异常
   assign excepttype_o = {19'b0,excepttype_is_eret,2'b0,
   												instvalid, excepttype_is_syscall,8'b0};
-  //assign excepttye_is_trapinst = 1'b0;
-  
+
+// 输入信号 pc_i 就是当前处于译码阶段的指令的地址
 	assign current_inst_address_o = pc_i;
     
 	always @ (*) begin	
@@ -717,7 +718,16 @@ module id(
 		end       //if
 	end         //always
 	
+	
+//为解决数据相关问题，给 reg1_o 赋值的过程增加了两种情况：
+//1．如果 Regfile 模块读端口 1 要读取的寄存器就是执行阶段要写的目的寄存器，
+// 那么直接把执行阶段的结果 ex_wdata_i 作为 reg1_o 的值;
+//2．如果 Regfile 模块读端口 1 要读取的寄存器就是访存阶段要写的目的寄存器，
+// 那么直接把访存阶段的结果 mem_wdata_i 作为 reg1_o 的值;
 
+// 为解决load相关问题，如果上一条指令是加载指令，且该加载指令要加载到的目的寄存器就是当前指令
+// 要通过 Regfile 模块读端口 1 读取的通用寄存器，那么表示存在 load 相关，
+// 设置 stallreq_for_reg1_loadrelate 为 Stop
 	always @ (*) begin
 			stallreq_for_reg1_loadrelate <= `NoStop;	
 		if(rst == `RstEnable) begin
@@ -740,6 +750,9 @@ module id(
 	  end
 	end
 	
+	// 如果上一条指令是加载指令，且该加载指令要加载到的目的寄存器就是当前指令
+    // 要通过 Regfile 模块读端口 2 读取的通用寄存器，那么表示存在 load 相关，
+    // 设置 stallreq_for_reg2_loadrelate 为 Stop
 	always @ (*) begin
 			stallreq_for_reg2_loadrelate <= `NoStop;
 		if(rst == `RstEnable) begin
@@ -761,7 +774,10 @@ module id(
 	    reg2_o <= `ZeroWord;
 	  end
 	end
+	
+    assign stallreq = stallreq_for_reg1_loadrelate | stallreq_for_reg2_loadrelate;	
 
+// 输出变量 is_in_delayslot_o 表示当前译码阶段指令是否是延迟槽指令
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			is_in_delayslot_o <= `NotInDelaySlot;

@@ -1,15 +1,35 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/06 18:42:27
+// Design Name: 
+// Module Name: Define
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
 //全局
-`define RstEnable 1'b1
-`define RstDisable 1'b0
-`define ZeroWord 32'h00000000
-`define WriteEnable 1'b1
-`define WriteDisable 1'b0
-`define ReadEnable 1'b1
-`define ReadDisable 1'b0
-`define AluOpBus 7:0
-`define AluSelBus 2:0
-`define InstValid 1'b0
-`define InstInvalid 1'b1
+`define RstEnable 1'b1//复位信号有效
+`define RstDisable 1'b0//复位信号无效
+`define ZeroWord 32'h00000000//32位的数值0
+`define WriteEnable 1'b1//使能写
+`define WriteDisable 1'b0//禁止写
+`define ReadEnable 1'b1//使能读
+`define ReadDisable 1'b0//禁止读
+`define AluOpBus 7:0//译码阶段的输出aluop_o的宽度
+`define AluSelBus 2:0//译码极端的输出alusel_o的宽度
+`define InstValid 1'b0//指令有效
+`define InstInvalid 1'b1//指令无效
 `define Stop 1'b1
 `define NoStop 1'b0
 `define InDelaySlot 1'b1
@@ -20,13 +40,14 @@
 `define InterruptNotAssert 1'b0
 `define TrapAssert 1'b1
 `define TrapNotAssert 1'b0
-`define True_v 1'b1
-`define False_v 1'b0
-`define ChipEnable 1'b1
-`define ChipDisable 1'b0
+`define True_v 1'b1//逻辑 真
+`define False_v 1'b0//逻辑 假
+`define ChipEnable 1'b1//芯片使能
+`define ChipDisable 1'b0//芯片禁止
 
 
 //指令
+//逻辑运算
 `define EXE_AND  6'b100100
 `define EXE_OR   6'b100101
 `define EXE_XOR 6'b100110
@@ -36,6 +57,7 @@
 `define EXE_XORI 6'b001110
 `define EXE_LUI 6'b001111
 
+//移位运算
 `define EXE_SLL  6'b000000
 `define EXE_SLLV  6'b000100
 `define EXE_SRL  6'b000010
@@ -45,6 +67,7 @@
 `define EXE_SYNC  6'b001111
 `define EXE_PREF  6'b110011
 
+//移动指令
 `define EXE_MOVZ  6'b001010
 `define EXE_MOVN  6'b001011
 `define EXE_MFHI  6'b010000
@@ -52,6 +75,7 @@
 `define EXE_MFLO  6'b010010
 `define EXE_MTLO  6'b010011
 
+//算术运算指令
 `define EXE_SLT  6'b101010
 `define EXE_SLTU  6'b101011
 `define EXE_SLTI  6'b001010
@@ -76,6 +100,7 @@
 `define EXE_DIV  6'b011010
 `define EXE_DIVU  6'b011011
 
+//跳转指令
 `define EXE_J  6'b000010
 `define EXE_JAL  6'b000011
 `define EXE_JALR  6'b001001
@@ -89,6 +114,7 @@
 `define EXE_BLTZAL  5'b10000
 `define EXE_BNE  6'b000101
 
+//存储指令
 `define EXE_LB  6'b100000
 `define EXE_LBU  6'b100100
 `define EXE_LH  6'b100001
@@ -106,6 +132,7 @@
 
 `define EXE_SYSCALL 6'b001100
    
+//异常指令
 `define EXE_TEQ 6'b110100
 `define EXE_TEQI 5'b01100
 `define EXE_TGE 6'b110000
@@ -121,6 +148,7 @@
    
 `define EXE_ERET 32'b01000010000000000000000000011000
 
+//空指令
 `define EXE_NOP 6'b000000
 `define SSNOP 32'b00000000000000000000000001000000
 

@@ -2,10 +2,10 @@
 # Vivado v2017.4 (64-bit)
 # SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
 # IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
-# Start of session at: Fri Dec  6 12:14:07 2024
-# Process ID: 16912
+# Start of session at: Fri Dec 13 14:14:29 2024
+# Process ID: 16168
 # Current directory: E:/VivadoProjects/cpu3
-# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent13868 E:\VivadoProjects\cpu3\cpu3.xpr
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent14860 E:\VivadoProjects\cpu3\cpu3.xpr
 # Log file: E:/VivadoProjects/cpu3/vivado.log
 # Journal file: E:/VivadoProjects/cpu3\vivado.jou
 #-----------------------------------------------------------
@@ -16,74 +16,8 @@ Finished scanning sources
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/Xilinx/Vivado/2017.4/data/ip'.
-file mkdir E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new
-close [ open E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/defines.v w ]
-add_files E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/defines.v
+open_project: Time (s): cpu = 00:00:14 ; elapsed = 00:00:06 . Memory (MB): peak = 792.191 ; gain = 77.234
 update_compile_order -fileset sources_1
-update_compile_order -fileset sources_1
-add_files -norecurse {E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v}
-update_compile_order -fileset sources_1
-update_compile_order -fileset sources_1
-file mkdir E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new
-set_property SOURCE_SET sources_1 [get_filesets sim_1]
-close [ open E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v w ]
-add_files -fileset sim_1 E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v
-update_compile_order -fileset sim_1
-update_compile_order -fileset sim_1
-launch_simulation
-INFO: [Vivado 12-5682] Launching behavioral simulation in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
-INFO: [SIM-utils-51] Simulation object is 'sim_1'
-INFO: [SIM-utils-54] Inspecting design source files for 'openmips_min_sopc_tb' in fileset 'sim_1'...
-INFO: [USF-XSim-97] Finding global include files...
-INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
-INFO: [USF-XSim-2] XSim::Compile design
-INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
-"xvlog --incr --relax -prj openmips_min_sopc_tb_vlog.prj"
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module LLbit_reg
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module cp0_reg
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module ctrl
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module data_ram
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module div
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module ex
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module ex_mem
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module hilo_reg
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module id
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module id_ex
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module if_id
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module inst_rom
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module mem
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module mem_wb
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module openmips
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module openmips_min_sopc
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module pc_reg
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module regfile
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v" into library xil_defaultlib
-ERROR: [VRFC 10-452] cannot open include file defines.v [E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v:33]
-INFO: [VRFC 10-311] analyzing module openmips_min_sopc_tb
-ERROR: [VRFC 10-1040] module openmips_min_sopc_tb ignored due to previous errors [E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v:36]
-INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
-INFO: [USF-XSim-99] Step results log file:'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim/xvlog.log'
-ERROR: [USF-XSim-62] 'compile' step failed with error(s). Please check the Tcl console output or 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim/xvlog.log' file for more information.
-ERROR: [Vivado 12-4473] Detected error while running simulation. Please correct the issue and retry this operation.
-ERROR: [Common 17-39] 'launch_simulation' failed due to earlier errors.
 launch_simulation
 INFO: [Vivado 12-5682] Launching behavioral simulation in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
 INFO: [SIM-utils-51] Simulation object is 'sim_1'
@@ -131,9 +65,7 @@ INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/so
 INFO: [VRFC 10-311] analyzing module regfile
 INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v" into library xil_defaultlib
 INFO: [VRFC 10-311] analyzing module openmips_min_sopc_tb
-INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module glbl
-INFO: [USF-XSim-69] 'compile' step finished in '1' seconds
+INFO: [USF-XSim-69] 'compile' step finished in '4' seconds
 INFO: [USF-XSim-3] XSim::Elaborate design
 INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
 Vivado Simulator 2017.4
@@ -141,28 +73,28 @@ Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
 Running: D:/Xilinx/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto f660f81ca2f840da8b8dfa2f9c710c01 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot openmips_min_sopc_tb_behav xil_defaultlib.openmips_min_sopc_tb xil_defaultlib.glbl -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
-WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 4 for port ram_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v:78]
-WARNING: [VRFC 10-278] actual bit length 4 differs from formal bit length 1 for port mem_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v:539]
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 4 for port ram_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v:83]
+WARNING: [VRFC 10-278] actual bit length 4 differs from formal bit length 1 for port mem_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v:544]
 Completed static elaboration
 Starting simulation data flow analysis
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v" Line 40. Module openmips_min_sopc doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v" Line 35. Module openmips doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v" Line 35. Module pc_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v" Line 22. Module openmips_min_sopc doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v" Line 23. Module openmips doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v" Line 24. Module pc_reg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v" Line 35. Module if_id doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v" Line 35. Module id doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v" Line 26. Module id doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v" Line 35. Module regfile doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v" Line 35. Module id_ex doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v" Line 35. Module ex doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v" Line 35. Module ex_mem doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v" Line 35. Module mem doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v" Line 35. Module mem_wb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v" Line 25. Module mem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v" Line 23. Module mem_wb doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v" Line 35. Module hilo_reg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v" Line 35. Module ctrl doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v" Line 35. Module div doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v" Line 35. Module LLbit_reg doesn't have a timescale but at least one module in design has a timescale.
 WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v" Line 36. Module cp0_reg doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v" Line 35. Module inst_rom doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v" Line 35. Module data_ram doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v" Line 23. Module inst_rom doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v" Line 23. Module data_ram doesn't have a timescale but at least one module in design has a timescale.
 Completed simulation data flow analysis
 Time Resolution for simulation is 1ps
 Compiling module xil_defaultlib.pc_reg
@@ -193,9 +125,9 @@ Built simulation snapshot openmips_min_sopc_tb_behav
     ** Copyright 1986-2017 Xilinx, Inc. All Rights Reserved.
 
 source E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim/xsim.dir/openmips_min_sopc_tb_behav/webtalk/xsim_webtalk.tcl -notrace
-INFO: [Common 17-206] Exiting Webtalk at Fri Dec  6 12:22:01 2024...
-run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:11 . Memory (MB): peak = 809.352 ; gain = 0.648
-INFO: [USF-XSim-69] 'elaborate' step finished in '11' seconds
+INFO: [Common 17-206] Exiting Webtalk at Fri Dec 13 14:59:46 2024...
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:22 . Memory (MB): peak = 824.047 ; gain = 0.164
+INFO: [USF-XSim-69] 'elaborate' step finished in '22' seconds
 INFO: [USF-XSim-4] XSim::Simulate design
 INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
 INFO: [USF-XSim-98] *** Running xsim
@@ -216,7 +148,242 @@ source openmips_min_sopc_tb.tcl
 # run 1000ns
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'openmips_min_sopc_tb_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
-launch_simulation: Time (s): cpu = 00:00:05 ; elapsed = 00:00:15 . Memory (MB): peak = 832.035 ; gain = 23.359
+launch_simulation: Time (s): cpu = 00:00:07 ; elapsed = 00:00:44 . Memory (MB): peak = 851.723 ; gain = 28.020
+restart
+INFO: [Simtcl 6-17] Simulation restarted
+run 3000 ns
+relaunch_sim
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'openmips_min_sopc_tb' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj openmips_min_sopc_tb_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module LLbit_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cp0_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ctrl
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module div
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ex
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ex_mem
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_ex
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_id
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module inst_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_wb
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module openmips
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module openmips_min_sopc
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pc_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module openmips_min_sopc_tb
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto f660f81ca2f840da8b8dfa2f9c710c01 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot openmips_min_sopc_tb_behav xil_defaultlib.openmips_min_sopc_tb xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 4 for port ram_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v:83]
+WARNING: [VRFC 10-278] actual bit length 4 differs from formal bit length 1 for port mem_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v:544]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v" Line 22. Module openmips_min_sopc doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v" Line 23. Module openmips doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v" Line 24. Module pc_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v" Line 35. Module if_id doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v" Line 26. Module id doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v" Line 35. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v" Line 35. Module id_ex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v" Line 35. Module ex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v" Line 35. Module ex_mem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v" Line 25. Module mem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v" Line 23. Module mem_wb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v" Line 35. Module hilo_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v" Line 35. Module ctrl doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v" Line 35. Module div doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v" Line 35. Module LLbit_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v" Line 36. Module cp0_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v" Line 23. Module inst_rom doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v" Line 23. Module data_ram doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.pc_reg
+Compiling module xil_defaultlib.if_id
+Compiling module xil_defaultlib.id
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_ex
+Compiling module xil_defaultlib.ex
+Compiling module xil_defaultlib.ex_mem
+Compiling module xil_defaultlib.mem
+Compiling module xil_defaultlib.mem_wb
+Compiling module xil_defaultlib.hilo_reg
+Compiling module xil_defaultlib.ctrl
+Compiling module xil_defaultlib.div
+Compiling module xil_defaultlib.LLbit_reg
+Compiling module xil_defaultlib.cp0_reg
+Compiling module xil_defaultlib.openmips
+Compiling module xil_defaultlib.inst_rom
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.openmips_min_sopc
+Compiling module xil_defaultlib.openmips_min_sopc_tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot openmips_min_sopc_tb_behav
+run_program: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 872.234 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+launch_simulation: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 872.234 ; gain = 0.000
+Vivado Simulator 2017.4
+Time resolution is 1 ps
+relaunch_sim: Time (s): cpu = 00:00:01 ; elapsed = 00:00:14 . Memory (MB): peak = 872.234 ; gain = 0.000
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+launch_simulation
+INFO: [Vivado 12-5682] Launching behavioral simulation in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [SIM-utils-54] Inspecting design source files for 'openmips_min_sopc_tb' in fileset 'sim_1'...
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+"xvlog --incr --relax -prj openmips_min_sopc_tb_vlog.prj"
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module LLbit_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module cp0_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ctrl
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module data_ram
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module div
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ex
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ex_mem
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module hilo_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module id_ex
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module if_id
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module inst_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mem_wb
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module openmips
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module openmips_min_sopc
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pc_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module regfile
+INFO: [VRFC 10-2263] Analyzing Verilog file "E:/VivadoProjects/cpu3/cpu3.srcs/sim_1/new/openmips_min_spoc_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module openmips_min_sopc_tb
+INFO: [USF-XSim-69] 'compile' step finished in '3' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+Vivado Simulator 2017.4
+Copyright 1986-1999, 2001-2016 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2017.4/bin/unwrapped/win64.o/xelab.exe -wto f660f81ca2f840da8b8dfa2f9c710c01 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot openmips_min_sopc_tb_behav xil_defaultlib.openmips_min_sopc_tb xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-278] actual bit length 1 differs from formal bit length 4 for port ram_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v:83]
+WARNING: [VRFC 10-278] actual bit length 4 differs from formal bit length 1 for port mem_ce_o [E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v:544]
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips_min_sopc.v" Line 22. Module openmips_min_sopc doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/openmips.v" Line 23. Module openmips doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/pc_reg.v" Line 24. Module pc_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/if_id.v" Line 35. Module if_id doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id.v" Line 26. Module id doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/regfile.v" Line 35. Module regfile doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/id_ex.v" Line 35. Module id_ex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex.v" Line 35. Module ex doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ex_mem.v" Line 35. Module ex_mem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem.v" Line 25. Module mem doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/mem_wb.v" Line 23. Module mem_wb doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/hilo_reg.v" Line 35. Module hilo_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/ctrl.v" Line 35. Module ctrl doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/div.v" Line 35. Module div doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/LLbit_reg.v" Line 35. Module LLbit_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/cp0_reg.v" Line 36. Module cp0_reg doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/inst_rom.v" Line 23. Module inst_rom doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "E:/VivadoProjects/cpu3/cpu3.srcs/sources_1/new/data_ram.v" Line 23. Module data_ram doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.pc_reg
+Compiling module xil_defaultlib.if_id
+Compiling module xil_defaultlib.id
+Compiling module xil_defaultlib.regfile
+Compiling module xil_defaultlib.id_ex
+Compiling module xil_defaultlib.ex
+Compiling module xil_defaultlib.ex_mem
+Compiling module xil_defaultlib.mem
+Compiling module xil_defaultlib.mem_wb
+Compiling module xil_defaultlib.hilo_reg
+Compiling module xil_defaultlib.ctrl
+Compiling module xil_defaultlib.div
+Compiling module xil_defaultlib.LLbit_reg
+Compiling module xil_defaultlib.cp0_reg
+Compiling module xil_defaultlib.openmips
+Compiling module xil_defaultlib.inst_rom
+Compiling module xil_defaultlib.data_ram
+Compiling module xil_defaultlib.openmips_min_sopc
+Compiling module xil_defaultlib.openmips_min_sopc_tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot openmips_min_sopc_tb_behav
+run_program: Time (s): cpu = 00:00:01 ; elapsed = 00:00:06 . Memory (MB): peak = 880.449 ; gain = 0.000
+INFO: [USF-XSim-69] 'elaborate' step finished in '6' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in 'E:/VivadoProjects/cpu3/cpu3.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "openmips_min_sopc_tb_behav -key {Behavioral:sim_1:Functional:openmips_min_sopc_tb} -tclbatch {openmips_min_sopc_tb.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2017.4
+Time resolution is 1 ps
+source openmips_min_sopc_tb.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'openmips_min_sopc_tb_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:11 . Memory (MB): peak = 880.449 ; gain = 0.000
 restart
 INFO: [Simtcl 6-17] Simulation restarted
 run 3000 ns

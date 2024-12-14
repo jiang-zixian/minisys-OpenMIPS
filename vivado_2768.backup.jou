@@ -2,23 +2,13 @@
 # Vivado v2017.4 (64-bit)
 # SW Build 2086221 on Fri Dec 15 20:55:39 MST 2017
 # IP Build 2085800 on Fri Dec 15 22:25:07 MST 2017
-# Start of session at: Fri Dec 13 14:14:29 2024
-# Process ID: 16168
+# Start of session at: Thu Dec 12 19:46:37 2024
+# Process ID: 2768
 # Current directory: E:/VivadoProjects/cpu3
-# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent14860 E:\VivadoProjects\cpu3\cpu3.xpr
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11636 E:\VivadoProjects\cpu3\cpu3.xpr
 # Log file: E:/VivadoProjects/cpu3/vivado.log
 # Journal file: E:/VivadoProjects/cpu3\vivado.jou
 #-----------------------------------------------------------
 start_gui
 open_project E:/VivadoProjects/cpu3/cpu3.xpr
 update_compile_order -fileset sources_1
-launch_simulation
-source openmips_min_sopc_tb.tcl
-restart
-run 3000 ns
-relaunch_sim
-close_sim
-launch_simulation
-source openmips_min_sopc_tb.tcl
-restart
-run 3000 ns

@@ -1,46 +1,34 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2014 leishangwen@163.com                       ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// Module:  data_ram
-// File:    data_ram.v
-// Author:  Lei Silei
-// E-mail:  leishangwen@163.com
-// Description: 数据存储器
-// Revision: 1.0
-//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/10 14:57:39
+// Design Name: 
+// Module Name: data_ram
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 数据存储器 RAM 模块
+//////////////////////////////////////////////////////////////////////////////////
 
 `include "defines.v"
 
 module data_ram(
 
-	input	wire										clk,
-	input wire										ce,
-	input wire										we,
+	input wire						    clk,
+	input wire							ce,
+	input wire							we,//是否是写操作，为 1 表示是写操作
 	input wire[`DataAddrBus]			addr,
-	input wire[3:0]								sel,
-	input wire[`DataBus]						data_i,
-	output reg[`DataBus]					data_o
+	input wire[3:0]						sel,//字节选择信号 4bit
+	input wire[`DataBus]				data_i,//要写入的数据
+	output reg[`DataBus]				data_o
 	
 );
 
@@ -49,6 +37,7 @@ module data_ram(
 	reg[`ByteWidth]  data_mem2[0:`DataMemNum-1];
 	reg[`ByteWidth]  data_mem3[0:`DataMemNum-1];
 
+//写
 	always @ (posedge clk) begin
 		if (ce == `ChipDisable) begin
 			//data_o <= ZeroWord;
@@ -68,6 +57,7 @@ module data_ram(
 		end
 	end
 	
+//读
 	always @ (*) begin
 		if (ce == `ChipDisable) begin
 			data_o <= `ZeroWord;

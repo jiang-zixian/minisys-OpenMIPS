@@ -1,34 +1,23 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2014 leishangwen@163.com                       ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// Module:  ex
-// File:    ex.v
-// Author:  Lei Silei
-// E-mail:  leishangwen@163.com
-// Description: 执行阶段
-// Revision: 1.0
-//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/08 20:13:10
+// Design Name: 
+// Module Name: ex
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// EX 模块会从 ID/EX 模块得到运
+// 算类型 alusel_i、运算子类型 aluop_i、源操作数 reg1_i、源操作数 reg2_i、要写的目的寄存器地址 wd_i
+//////////////////////////////////////////////////////////////////////////////////
 
 `include "defines.v"
 
@@ -37,15 +26,15 @@ module ex(
 	input wire										rst,
 	
 	//送到执行阶段的信息
-	input wire[`AluOpBus]         aluop_i,
-	input wire[`AluSelBus]        alusel_i,
-	input wire[`RegBus]           reg1_i,
-	input wire[`RegBus]           reg2_i,
-	input wire[`RegAddrBus]       wd_i,
-	input wire                    wreg_i,
+	input wire[`AluOpBus]         aluop_i,//3bit 执行阶段要进行的运算的类型
+    input wire[`AluSelBus]        alusel_i,//8bit 执行阶段要进行的运算的子类型
+    input wire[`RegBus]           reg1_i,//源操作数1
+    input wire[`RegBus]           reg2_i,//源操作数2
+    input wire[`RegAddrBus]       wd_i,//指令执行要写入的目的寄存器地址 5bit
+    input wire                    wreg_i,//是否有要写入的目的寄存器
 	input wire[`RegBus]           inst_i,
-	input wire[31:0]              excepttype_i,
-	input wire[`RegBus]          current_inst_address_i,
+	input wire[31:0]              excepttype_i,//译码阶段收集到的异常信息
+	input wire[`RegBus]          current_inst_address_i,//执行阶段指令的地址
 	
 	//HI、LO寄存器的值
 	input wire[`RegBus]           hi_i,
@@ -65,20 +54,20 @@ module ex(
 	input wire[1:0]               cnt_i,
 
 	//与除法模块相连
-	input wire[`DoubleRegBus]     div_result_i,
-	input wire                    div_ready_i,
+    input wire[`DoubleRegBus]     div_result_i,//除法运算结果 64bit
+    input wire                    div_ready_i,	//除法运算是否结束
 
 	//是否转移、以及link address
 	input wire[`RegBus]           link_address_i,
 	input wire                    is_in_delayslot_i,	
 
 	//访存阶段的指令是否要写CP0，用来检测数据相关
-  input wire                    mem_cp0_reg_we,
+    input wire                    mem_cp0_reg_we,
 	input wire[4:0]               mem_cp0_reg_write_addr,
 	input wire[`RegBus]           mem_cp0_reg_data,
 	
 	//回写阶段的指令是否要写CP0，用来检测数据相关
-  input wire                    wb_cp0_reg_we,
+    input wire                    wb_cp0_reg_we,
 	input wire[4:0]               wb_cp0_reg_write_addr,
 	input wire[`RegBus]           wb_cp0_reg_data,
 
@@ -91,56 +80,56 @@ module ex(
 	output reg[4:0]               cp0_reg_write_addr_o,
 	output reg[`RegBus]           cp0_reg_data_o,
 	
-	output reg[`RegAddrBus]       wd_o,
-	output reg                    wreg_o,
-	output reg[`RegBus]						wdata_o,
+	output reg[`RegAddrBus]       wd_o,//执行阶段的指令最终要写入的目的寄存器地址 5bit
+    output reg                    wreg_o,//执行阶段的指令最终是否有要写入的目的寄存器 1bit
+    output reg[`RegBus]           wdata_o,//执行阶段的指令最终要写入目的寄存器的值 32bit
 
 	output reg[`RegBus]           hi_o,
 	output reg[`RegBus]           lo_o,
 	output reg                    whilo_o,
 	
-	output reg[`DoubleRegBus]     hilo_temp_o,
-	output reg[1:0]               cnt_o,
+    output reg[`DoubleRegBus]     hilo_temp_o,//第一个执行周期得到的乘法结果
+    output reg[1:0]               cnt_o,//下一个时钟周期处于执行阶段的第几个时钟周期
 
-	output reg[`RegBus]           div_opdata1_o,
-	output reg[`RegBus]           div_opdata2_o,
-	output reg                    div_start_o,
-	output reg                    signed_div_o,
+    output reg[`RegBus]           div_opdata1_o,//被除数
+    output reg[`RegBus]           div_opdata2_o,//除数
+    output reg                    div_start_o,//是否开始除法运算
+    output reg                    signed_div_o,//是否是有符号除法，为 1 表示是有符号除法
 
 	//下面新增的几个输出是为加载、存储指令准备的
 	output wire[`AluOpBus]        aluop_o,
 	output wire[`RegBus]          mem_addr_o,
 	output wire[`RegBus]          reg2_o,
 	
-	output wire[31:0]             excepttype_o,
-	output wire                   is_in_delayslot_o,
-	output wire[`RegBus]          current_inst_address_o,	
+	output wire[31:0]             excepttype_o,//译码阶段、执行阶段收集到的异常信息
+	output wire                   is_in_delayslot_o,//执行阶段的指令是否是延迟槽指令
+	output wire[`RegBus]          current_inst_address_o,	//执行阶段指令的地址
 
-	output reg										stallreq       			
+	output reg					stallreq       			
 	
 );
 
 	reg[`RegBus] logicout;
-	reg[`RegBus] shiftres;
-	reg[`RegBus] moveres;
-	reg[`RegBus] arithmeticres;
-	reg[`DoubleRegBus] mulres;	
-	reg[`RegBus] HI;
-	reg[`RegBus] LO;
-	wire[`RegBus] reg2_i_mux;
-	wire[`RegBus] reg1_i_not;	
+	reg[`RegBus] shiftres;// 保存移位运算结果
+    reg[`RegBus] moveres;// 移动操作的结果
+    reg[`RegBus] arithmeticres;// 保存算术运算的结果
+    reg[`DoubleRegBus] mulres;// 保存乘法结果，宽度为 64 位
+    reg[`RegBus] HI;// 保存 HI 寄存器的最新值
+    reg[`RegBus] LO;// 保存 LO 寄存器的最新值
+	wire[`RegBus] reg2_i_mux;// 保存输入的第二个操作数 reg2_i 的补码
+    wire[`RegBus] reg1_i_not;// 保存输入的第一个操作数 reg1_i 取反后的值  
 	wire[`RegBus] result_sum;
 	wire ov_sum;
-	wire reg1_eq_reg2;
-	wire reg1_lt_reg2;
-	wire[`RegBus] opdata1_mult;
-	wire[`RegBus] opdata2_mult;
-	wire[`DoubleRegBus] hilo_temp;
+    wire reg1_eq_reg2;// 第一个操作数是否等于第二个操作数
+    wire reg1_lt_reg2;// 第一个操作数是否小于第二个操作数
+    wire[`RegBus] opdata1_mult;// 乘法操作中的被乘数
+    wire[`RegBus] opdata2_mult;// 乘法操作中的乘数
+    wire[`DoubleRegBus] hilo_temp;// 临时保存乘法结果，宽度为 64 位      
 	reg[`DoubleRegBus] hilo_temp1;
 	reg stallreq_for_madd_msub;			
 	reg stallreq_for_div;
-	reg trapassert;
-	reg ovassert;
+    reg trapassert; // 新定义变量，表示是否有自陷异常
+    reg ovassert; // 新定义变量，表示是否有溢出异常
 
   //aluop_o传递到访存阶段，用于加载、存储指令
   assign aluop_o = aluop_i;
@@ -151,9 +140,13 @@ module ex(
   //将两个操作数也传递到访存阶段，也是为记载、存储指令准备的
   assign reg2_o = reg2_i;
  
+ // 执行阶段输出的异常信息就是译码阶段的异常信息加上自陷异常、溢出异常的信息，
+  // 其中第 10bit 表示是否有自陷异常，第 11bit 表示是否有溢出异常
   assign excepttype_o = {excepttype_i[31:12],ovassert,trapassert,excepttype_i[9:8],8'h00};
   
 	assign is_in_delayslot_o = is_in_delayslot_i;
+	
+	// 当前处于执行阶段指令的地址
 	assign current_inst_address_o = current_inst_address_i;
 
 	always @ (*) begin
@@ -202,17 +195,40 @@ module ex(
 		end    //if
 	end      //always
 
+//（1）如果是减法或者有符号比较运算，那么 reg2_i_mux 等于第二个操作数
+// reg2_i 的补码，否则 reg2_i_mux 就等于第二个操作数 reg2_i   
 	assign reg2_i_mux = ((aluop_i == `EXE_SUB_OP) || (aluop_i == `EXE_SUBU_OP) ||
 											 (aluop_i == `EXE_SLT_OP)|| (aluop_i == `EXE_TLT_OP) ||
 	                       (aluop_i == `EXE_TLTI_OP) || (aluop_i == `EXE_TGE_OP) ||
 	                       (aluop_i == `EXE_TGEI_OP)) 
 											 ? (~reg2_i)+1 : reg2_i;
 
+ //（2）分三种情况：
+ // A．如果是加法运算，此时 reg2_i_mux 就是第二个操作数 reg2_i，
+ // 所以 result_sum 就是加法运算的结果
+ // B．如果是减法运算，此时 reg2_i_mux 是第二个操作数 reg2_i 的补码，
+ // 所以 result_sum 就是减法运算的结果
+ // C．如果是有符号比较运算，此时 reg2_i_mux 也是第二个操作数 reg2_i
+ // 的补码，所以 result_sum 也是减法运算的结果，可以通过判断减法
+ // 的结果是否小于零，进而判断第一个操作数 reg1_i 是否小于第二个操
+ // 作数 reg2_i
 	assign result_sum = reg1_i + reg2_i_mux;										 
 
+//（3）计算是否溢出，加法指令（add 和 addi）、减法指令（sub）执行的时候，
+// 需要判断是否溢出，满足以下两种情况之一时，有溢出：
+// A． reg1_i 为正数， reg2_i_mux 为正数，但是两者之和为负数
+// B． reg1_i 为负数， reg2_i_mux 为负数，但是两者之和为正数
 	assign ov_sum = ((!reg1_i[31] && !reg2_i_mux[31]) && result_sum[31]) ||
 									((reg1_i[31] && reg2_i_mux[31]) && (!result_sum[31]));  
-									
+		
+//（4）计算操作数 1 是否小于操作数 2，分两种情况：
+                                    // A． aluop_i 为 EXE_SLT_OP 表示有符号比较运算，此时又分 3 种情况
+                                    // A1． reg1_i 为负数、 reg2_i 为正数，显然 reg1_i 小于 reg2_i
+                                    // A2． reg1_i 为正数、 reg2_i 为正数，并且 reg1_i 减去 reg2_i 的值小于 0
+                                    // （即 result_sum 为负），此时也有 reg1_i 小于 reg2_i
+                                    // A3． reg1_i 为负数、 reg2_i 为负数，并且 reg1_i 减去 reg2_i 的值小于 0
+                                    // （即 result_sum 为负），此时也有 reg1_i 小于 reg2_i
+                                    // B、无符号数比较的时候，直接使用比较运算符比较 reg1_i 与 reg2_i   									
 	assign reg1_lt_reg2 = ((aluop_i == `EXE_SLT_OP) || (aluop_i == `EXE_TLT_OP) ||
 	                       (aluop_i == `EXE_TLTI_OP) || (aluop_i == `EXE_TGE_OP) ||
 	                       (aluop_i == `EXE_TGEI_OP)) ?
@@ -307,13 +323,30 @@ module ex(
 	assign opdata1_mult = (((aluop_i == `EXE_MUL_OP) || (aluop_i == `EXE_MULT_OP) ||
 													(aluop_i == `EXE_MADD_OP) || (aluop_i == `EXE_MSUB_OP))
 													&& (reg1_i[31] == 1'b1)) ? (~reg1_i + 1) : reg1_i;
-
+//取得乘法运算的乘数，如果是有符号乘法且乘数是负数，那么取补码    
   assign opdata2_mult = (((aluop_i == `EXE_MUL_OP) || (aluop_i == `EXE_MULT_OP) ||
 													(aluop_i == `EXE_MADD_OP) || (aluop_i == `EXE_MSUB_OP))
 													&& (reg2_i[31] == 1'b1)) ? (~reg2_i + 1) : reg2_i;	
 
   assign hilo_temp = opdata1_mult * opdata2_mult;																				
 
+//（4.1）对临时乘法结果进行修正，最终的乘法结果保存在变量 mulres 中，主要有两点：
+// A．如果是有符号乘法指令 mult、 mul，那么需要修正临时乘法结果，如下：
+// A1．如果被乘数与乘数两者一正一负，那么需要对临时乘法结果
+// hilo_temp 求补码，作为最终的乘法结果，赋给变量 mulres。
+// A2．如果被乘数与乘数同号，那么 hilo_temp 的值就作为最终的
+// 乘法结果，赋给变量 mulres。
+// B．如果是无符号乘法指令 multu，那么 hilo_temp 的值就作为最终的乘法结果,
+// 赋给变量 mulres    
+
+//（4.2）对临时乘法结果进行修正，最终的乘法结果保存在变量 mulres 中，有两种情况：
+// A．如果是有符号乘法运算 madd、 msub，那么需要修正临时乘法结果，如下：
+// A1．如果被乘数与乘数两者一正一负，那么需要对临时乘法结果
+// hilo_temp 求补码，作为最终的乘法结果，赋给变量 mulres。
+// A2．如果被乘数与乘数同号，那么 hilo_temp 的值就作为 mulres
+// 的值。
+// B．如果是无符号乘法运算 maddu、 msubu，那么 hilo_temp 的值就作为
+// 最终的乘法结果，赋给变量 mulres
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			mulres <= {`ZeroWord,`ZeroWord};
@@ -472,14 +505,15 @@ module ex(
 	   		moveres <= reg1_i;
 	   	end
 	   	`EXE_MFC0_OP:		begin
-	   	  cp0_reg_read_addr_o <= inst_i[15:11];
-	   		moveres <= cp0_reg_data_i;
+	   	  cp0_reg_read_addr_o <= inst_i[15:11];//要从CP0中读取的寄存器的地址
+	   		moveres <= cp0_reg_data_i;//读取到的CP0中指定寄存器的值
+	   		//判断是否存在数据相关
 	   		if( mem_cp0_reg_we == `WriteEnable &&
 	   				  mem_cp0_reg_write_addr == inst_i[15:11] ) begin
-	   				moveres <= mem_cp0_reg_data;
+	   				moveres <= mem_cp0_reg_data;//与访存阶段存在数据相关
 	   		end else if( wb_cp0_reg_we == `WriteEnable &&
 	   				 							 wb_cp0_reg_write_addr == inst_i[15:11] ) begin
-	   				moveres <= wb_cp0_reg_data;
+	   				moveres <= wb_cp0_reg_data;//与回写阶段存在数据相关
 	   		end
 	   	end	   	
 	   	default : begin
@@ -494,10 +528,10 @@ module ex(
 	 if(((aluop_i == `EXE_ADD_OP) || (aluop_i == `EXE_ADDI_OP) || 
 	      (aluop_i == `EXE_SUB_OP)) && (ov_sum == 1'b1)) begin
 	 	wreg_o <= `WriteDisable;
-	 	ovassert <= 1'b1;
+	 	ovassert <= 1'b1;//发生了溢出异常
 	 end else begin
 	  wreg_o <= wreg_i;
-	  ovassert <= 1'b0;
+	  ovassert <= 1'b0;//没有发生溢出异常
 	 end
 	 
 	 case ( alusel_i ) 

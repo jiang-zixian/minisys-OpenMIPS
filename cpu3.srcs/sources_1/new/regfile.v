@@ -1,56 +1,46 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2014 leishangwen@163.com                       ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// Module:  regfile
-// File:    regfile.v
-// Author:  Lei Silei
-// E-mail:  leishangwen@163.com
-// Description: 通用寄存器，共32个
-// Revision: 1.0
-//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/07 11:43:55
+// Design Name: 
+// Module Name: regfile
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 译码阶段：将对取到的指令进行译码：给出要进行的运算类型，以及参与运算的操作数。译码阶段包括 Regfile、ID 和 ID/EX 三个模块。
+// regfile模块，实现了 32 个 32 位通用整数寄存器，可以同时进行两个寄存器的读操作和一个寄存器的写操作
+// 回写阶段其实就实现在regfile模块
+//////////////////////////////////////////////////////////////////////////////////
 
 `include "defines.v"
 
 module regfile(
 
-	input	wire										clk,
+	input wire										clk,
 	input wire										rst,
 	
 	//写端口
-	input wire										we,
-	input wire[`RegAddrBus]				waddr,
-	input wire[`RegBus]						wdata,
-	
-	//读端口1
-	input wire										re1,
-	input wire[`RegAddrBus]			  raddr1,
-	output reg[`RegBus]           rdata1,
-	
-	//读端口2
-	input wire										re2,
-	input wire[`RegAddrBus]			  raddr2,
-	output reg[`RegBus]           rdata2,
+    input wire                            we,//写使能信号
+    input wire[`RegAddrBus]                waddr,//要写入的寄存器地址
+    input wire[`RegBus]                    wdata,//要写入的数据
+    
+    //读端口1
+    input wire                            re1,//第一个读寄存器端口读使能信号
+    input wire[`RegAddrBus]                raddr1,//第一个读寄存器端口要读取的寄存器的地址
+    output reg[`RegBus]                rdata1,//第一个读寄存器端口输出的寄存器值
+    
+    //读端口2
+    input wire                            re2,//第二个读寄存器端口读使能信号
+    input wire[`RegAddrBus]                raddr2,//第二个读寄存器端口要读取的寄存器的地址
+    output reg[`RegBus]                 rdata2,//第二个读寄存器端口输出的寄存器值
 	
     // 输出寄存器 1、2、3、4 的值
     output wire[`RegBus] out_r1,
@@ -75,8 +65,8 @@ module regfile(
 			  rdata1 <= `ZeroWord;
 	  end else if(raddr1 == `RegNumLog2'h0) begin
 	  		rdata1 <= `ZeroWord;
-	  end else if((raddr1 == waddr) && (we == `WriteEnable) 
-	  	            && (re1 == `ReadEnable)) begin
+	  end else if((raddr1 == waddr) && (we == `WriteEnable) //这里可以解决相隔两条指令的数据相关问题，可见书籍P110
+	  	            && (re1 == `ReadEnable)) begin//如果第一个读寄存器端口要读取的目标寄存器与要写入的目的寄存器是同一个寄存器，那么直接将要写入的值作为第一个读寄存器端口的输出
 	  	  rdata1 <= wdata;
 	  end else if(re1 == `ReadEnable) begin
 	      rdata1 <= regs[raddr1];
@@ -85,7 +75,7 @@ module regfile(
 	  end
 	end
 
-	always @ (*) begin
+	always @ (*) begin//一旦要输入的raddr1和raddr2发生变化，那么立即给出新地址对应的寄存器的值
 		if(rst == `RstEnable) begin
 			  rdata2 <= `ZeroWord;
 	  end else if(raddr2 == `RegNumLog2'h0) begin
@@ -100,7 +90,7 @@ module regfile(
 	  end
 	end
 	
-	// 五、输出指定寄存器的值
+	// 输出指定寄存器的值 用于调试
     assign out_r1 = regs[1]; // 输出寄存器 1 的值
     assign out_r2 = regs[2]; // 输出寄存器 2 的值
     assign out_r3 = regs[3]; // 输出寄存器 3 的值

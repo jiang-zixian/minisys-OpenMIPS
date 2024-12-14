@@ -1,50 +1,40 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2014 leishangwen@163.com                       ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// Module:  mem
-// File:    mem.v
-// Author:  Lei Silei
-// E-mail:  leishangwen@163.com
-// Description: 访存阶段
-// Revision: 1.0
-//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/11/08 20:37:39
+// Design Name: 
+// Module Name: mem
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 进入访存阶段了，但是由于 ori 指令不需要访问数据存储器，所以在访存
+// 阶段，不做任何事，只是简单地将执行阶段的结果向回写阶段传递即可。
+// 流水线访存阶段包括 MEM、MEM/WB 两个模块。
+//////////////////////////////////////////////////////////////////////////////////
 
 `include "defines.v"
 
 module mem(
 
-	input wire										rst,
+	input wire					   rst,
 	
 	//来自执行阶段的信息	
-	input wire[`RegAddrBus]       wd_i,
-	input wire                    wreg_i,
-	input wire[`RegBus]					  wdata_i,
+	input wire[`RegAddrBus]       wd_i,//访存阶段的指令要写入的目的寄存器地址
+    input wire                    wreg_i,//访存阶段的指令是否有要写入的目的寄存器
+    input wire[`RegBus]           wdata_i,//访存阶段的指令要写入目的寄存器的值
 	input wire[`RegBus]           hi_i,
 	input wire[`RegBus]           lo_i,
 	input wire                    whilo_i,	
 
-  input wire[`AluOpBus]        aluop_i,
+    input wire[`AluOpBus]          aluop_i,
 	input wire[`RegBus]          mem_addr_i,
 	input wire[`RegBus]          reg2_i,
 	
@@ -54,7 +44,7 @@ module mem(
 	//LLbit_i是LLbit寄存器的值
 	input wire                  LLbit_i,
 	//但不一定是最新值，回写阶段可能要写LLbit，所以还要进一步判断
-	input wire                  wb_LLbit_we_i,
+	input wire                  wb_LLbit_we_i,//回写阶段的指令是否要写 LLbit 寄存器
 	input wire                  wb_LLbit_value_i,
 
 	//协处理器CP0的写信号
@@ -72,19 +62,19 @@ module mem(
 	input wire[`RegBus]          cp0_epc_i,
 
 	//回写阶段的指令是否要写CP0，用来检测数据相关
-  input wire                    wb_cp0_reg_we,
+    input wire                    wb_cp0_reg_we,
 	input wire[4:0]               wb_cp0_reg_write_addr,
 	input wire[`RegBus]           wb_cp0_reg_data,
 	
 	//送到回写阶段的信息
-	output reg[`RegAddrBus]      wd_o,
-	output reg                   wreg_o,
-	output reg[`RegBus]					 wdata_o,
-	output reg[`RegBus]          hi_o,
-	output reg[`RegBus]          lo_o,
+	output reg[`RegAddrBus]      wd_o,//访存阶段的指令最终要写入的目的寄存器地址
+    output reg                   wreg_o,//访存阶段的指令最终是否有要写入的目的寄存器
+    output reg[`RegBus]          wdata_o,//访存阶段的指令最终要写入目的寄存器的值
+    output reg[`RegBus]          hi_o,//访存阶段的指令最终要写入 HI 寄存器的值
+    output reg[`RegBus]          lo_o,//访存阶段的指令最终要写入 LO 寄存器的值
 	output reg                   whilo_o,
 
-	output reg                   LLbit_we_o,
+	output reg                   LLbit_we_o,//访存阶段的指令是否要写 LLbit 寄存器
 	output reg                   LLbit_value_o,
 
 	output reg                   cp0_reg_we_o,
@@ -93,34 +83,39 @@ module mem(
 	
 	//送到memory的信息
 	output reg[`RegBus]          mem_addr_o,
-	output wire									 mem_we_o,
+	output wire					 mem_we_o,
 	output reg[3:0]              mem_sel_o,
 	output reg[`RegBus]          mem_data_o,
 	output reg                   mem_ce_o,
 	
-	output reg[31:0]             excepttype_o,
-	output wire[`RegBus]          cp0_epc_o,
+	output reg[31:0]             excepttype_o,//最终的异常类型
+	output wire[`RegBus]         cp0_epc_o,//CP0中EPC寄存器的最新值
 	output wire                  is_in_delayslot_o,
 	
 	output wire[`RegBus]         current_inst_address_o		
 	
 );
 
-  reg LLbit;
+    reg LLbit;
 	wire[`RegBus] zero32;
-	reg[`RegBus]          cp0_status;
-	reg[`RegBus]          cp0_cause;
-	reg[`RegBus]          cp0_epc;	
+    reg[`RegBus] cp0_status; // 用来保存 CP0 中 Status 寄存器的最新值
+    reg[`RegBus] cp0_cause; // 用来保存 CP0 中 Cause 寄存器的最新值
+    reg[`RegBus] cp0_epc; // 用来保存 CP0 中 EPC 寄存器的最新值
 	reg                   mem_we;
 
+    // mem_we_o 输出到数据存储器，表示是否是对数据存储器的写操作，
+    // 如果发生了异常，那么需要取消对数据存储器的写操作
 	assign mem_we_o = mem_we & (~(|excepttype_o));
+	
 	assign zero32 = `ZeroWord;
 
 	assign is_in_delayslot_o = is_in_delayslot_i;
+	// current_inst_address_o 是访存阶段指令的地址
 	assign current_inst_address_o = current_inst_address_i;
 	assign cp0_epc_o = cp0_epc;
 
-  //获取最新的LLbit的值
+  // 获取 LLbit 寄存器的最新值，如果回写阶段的指令要写 LLbit，那么回写阶段要写入的
+  // 值就是 LLbit 寄存器的最新值，反之， LLbit 模块给出的值 LLbit_i 是最新值
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			LLbit <= 1'b0;
@@ -438,6 +433,11 @@ module mem(
 		end    //if
 	end      //always
 
+
+// 得到 CP0 中 Status 寄存器的最新值，步骤如下：
+// 判断当前处于回写阶段的指令是否要写 CP0 中 Status 寄存器，如果要写，那么要写
+// 入的值就是 Status 寄存器的最新值，反之，从 CP0 模块通过 cp0_status_i 接口
+// 传入的数据就是 Status 寄存器的最新值
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			cp0_status <= `ZeroWord;
@@ -449,6 +449,7 @@ module mem(
 		end
 	end
 	
+	//与上同理
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			cp0_epc <= `ZeroWord;
@@ -460,7 +461,8 @@ module mem(
 		end
 	end
 
-  always @ (*) begin
+    //与上同理
+    always @ (*) begin
 		if(rst == `RstEnable) begin
 			cp0_cause <= `ZeroWord;
 		end else if((wb_cp0_reg_we == `WriteEnable) && 
@@ -473,12 +475,12 @@ module mem(
 		end
 	end
 
+//给出最终的异常类型
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			excepttype_o <= `ZeroWord;
 		end else begin
 			excepttype_o <= `ZeroWord;
-			
 			if(current_inst_address_i != `ZeroWord) begin
 				if(((cp0_cause[15:8] & (cp0_status[15:8])) != 8'h00) && (cp0_status[1] == 1'b0) && 
 							(cp0_status[0] == 1'b1)) begin
